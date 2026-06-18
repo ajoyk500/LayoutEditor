@@ -33,7 +33,8 @@ public class Choice implements Parcelable{
 	public Choice(Parcel parcel){
 		data = new ArrayList<>();
 	    parcel.readTypedList(data, Item.CREATOR);
-		this.singleChoice = parcel.readBoolean();
+	    // Use readByte for backward compatibility (readBoolean requires API 29)
+		this.singleChoice = parcel.readByte() != 0;
 	}
 	
 	public static Choice createBoolean(){
@@ -47,7 +48,8 @@ public class Choice implements Parcelable{
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeTypedList(data);
-		dest.writeBoolean(singleChoice);
+		// Use writeByte for backward compatibility (writeBoolean requires API 29)
+		dest.writeByte((byte) (singleChoice ? 1 : 0));
 	}
 	
 	@Override
