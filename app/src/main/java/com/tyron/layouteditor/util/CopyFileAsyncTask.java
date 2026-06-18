@@ -73,7 +73,9 @@ public class CopyFileAsyncTask extends AsyncTask<Uri, Integer, String> {
                     if (mUri.getScheme() != null)
                         if (mUri.getScheme().equals("content")) {
                             int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
-                            size = (int) returnCursor.getLong(sizeIndex);
+                            if (sizeIndex >= 0) {
+                                size = (int) returnCursor.getLong(sizeIndex);
+                            }
                         }else if (mUri.getScheme().equals("file")) {
                             File ff = new File(mUri.getPath());
                             size = (int) ff.length();
@@ -122,7 +124,10 @@ public class CopyFileAsyncTask extends AsyncTask<Uri, Integer, String> {
             if (uri.getScheme().equals("content")) {
                 Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
                 if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                    int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (nameIndex >= 0) {
+                        result = cursor.getString(nameIndex);
+                    }
                 }
                 if (cursor != null) {
                     cursor.close();
