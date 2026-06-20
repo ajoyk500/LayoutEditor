@@ -1,0 +1,15 @@
+- name: Show repository structure (debug)
+        run: |
+          echo "=== Top-level files/folders ==="
+          ls -la
+          echo ""
+          echo "=== Full tree (depth 3) ==="
+          find . -maxdepth 3 -not -path './.git*' | sort
+          echo ""
+          echo "=== Does app/ exist? ==="
+          if [ -d app ]; then
+            echo "YES - app/ folder found"
+            ls -la app
+          else
+            echo "NO - app/ folder is MISSING from this repository"
+          fi
